@@ -37,3 +37,12 @@
     outline: none;
     padding: 10px;
 }
+/*fabs*/
+.fab{
+    border-radius: 100%;
+    font-size: 30px;
+    padding: 20px;
+    bottom: 20px;
+    position: fixed;
+    right: 25px;
+}

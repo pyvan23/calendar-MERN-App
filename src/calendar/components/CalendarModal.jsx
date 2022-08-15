@@ -30,7 +30,7 @@ Modal.setAppElement( "#root" );
 
 export const CalendarModal = () => {
 
-  const {activeEvent} = useCalendarStore()
+  const {activeEvent,startSavingEvent} = useCalendarStore()
 
   const { isDateModalOpen,closeDateModal} = useUiStore()
 
@@ -64,30 +64,38 @@ export const CalendarModal = () => {
       [target.name]: target.value}   ) 
     }
 
-const onDateChanged = (event,changing) =>{
+  const onDateChanged = (event,changing) =>{
   setFormValues({
     ...formValues,
     [changing]:event
   })
 }
-const onSubmit = ( event )=>{
+const onCloseModal = () => {
+  closeDateModal();
+}
+
+const onSubmit = async( event )=>{
+
 event.preventDefault()
 setFormSubmitted(true)
 
-const diference = differenceInSeconds(formValues.end,formValues.start)
+const diference = differenceInSeconds(formValues.end,formValues.start);
 
 if(isNaN(diference) || diference<=0){
 
   Swal.fire('Fecha Incorrecta','por favor ingrese una fecha valida','error')
   return
+  
 }
-if(formValues.length<=0){return}
+if(formValues.title.length<=0)return
+
+
+ await startSavingEvent(formValues)
+closeDateModal()
+setFormSubmitted(false);
 
 }
 
-const onCloseModal = () =>{
-  closeDateModal()
-}
 
   return (
     <Modal
@@ -167,4 +175,4 @@ const onCloseModal = () =>{
 </form>
     </Modal>
   );
-};
+}
