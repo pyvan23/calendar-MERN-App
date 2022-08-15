@@ -17,7 +17,7 @@ export const CalendarPage = () => {
 
 const {openDateModal,toggleModal} = useUiStore()
 
-const { events } = useCalendarStore()
+const { events,setActiveEvent } = useCalendarStore()
 
  const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'week')
 
@@ -38,7 +38,7 @@ const { events } = useCalendarStore()
     //  toggleModal()
   }
   const onSelected = (event) => {
-    
+    setActiveEvent(event);
 
   }
   const onViewChange = (event) => {
