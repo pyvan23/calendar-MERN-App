@@ -1,29 +1,23 @@
 import { Calendar } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-import { addHours } from "date-fns";
+
 import { Navbar } from "../components/Navbar";
 import { localizer } from "../../helpers/calendarLocalizer";
 import { getMessages } from "../../helpers/getMessages";
 import { CalendarEventBox } from "../components/CalendarEventBox";
 import { useState } from "react";
 import { CalendarModal } from "../components/CalendarModal";
+import { useUiStore } from "../../hooks/useUiStore";
+import { useCalendarStore } from "../../hooks/useCalendarStore";
 
-const events = [
-  {
-    title: "cumpleaños del jefe",
-    notes: "hay que comprar el pastel",
-    start: new Date(),
-    end: addHours(new Date(), 2),
-    bgColor: "#fafafa",
-    user: {
-      _id: "123",
-      name: "ivan",
-    },
-  },
-];
+
 
 export const CalendarPage = () => {
+
+const {openDateModal,toggleModal} = useUiStore()
+
+const { events } = useCalendarStore()
 
  const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'week')
 
@@ -40,10 +34,12 @@ export const CalendarPage = () => {
     };
   };
   const onDoubleCilck = (event)=>{
-    console.log({doubliClick:event});
+     openDateModal()
+    //  toggleModal()
   }
   const onSelected = (event) => {
-    console.log({onSelected:event})
+    
+
   }
   const onViewChange = (event) => {
     localStorage.setItem('lastView',event)
