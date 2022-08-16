@@ -40,9 +40,19 @@
 /*fabs*/
 .fab{
     border-radius: 100%;
-    font-size: 30px;
+    font-size: 22px;
     padding: 20px;
     bottom: 20px;
     position: fixed;
     right: 25px;
+}
+.fab-danger{
+    border-radius: 100%;
+    font-size: 22px;
+    width: 61px;
+     height: 61px;
+    bottom: 20px;
+    position: fixed;
+    left: 50px;
+    
 }

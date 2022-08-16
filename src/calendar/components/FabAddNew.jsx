@@ -6,7 +6,7 @@ import { useUiStore } from "../../hooks/useUiStore"
 export const FabAddNew = () => {
 
 const { openDateModal } = useUiStore()
-const {setActiveEvent} = useCalendarStore()
+const { setActiveEvent } = useCalendarStore()
 
 
 const handleClickNew = () =>{
