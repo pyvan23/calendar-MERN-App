@@ -4,8 +4,8 @@ import { CalendarPage } from "../calendar/pages/CalendarPage";
 import { getEnvVariables } from "../helpers/getEnvVariables";
 
 export const AppRouter = () => {
-  const authStatus = "authenticated";
-console.log(getEnvVariables());
+  const authStatus = "not-authenticated";
+
   return (
     <Routes>
       {authStatus === "not-authenticated" ? (
