@@ -33,7 +33,7 @@ export const useAuthStore = () => {
       }, 10);
     }
   }
-  const startRegister = async ({name, email, password, password2 }) => {
+  const startRegister = async ({ name, email, password }) => {
 
     dispatch(onChecking());
 
@@ -42,23 +42,45 @@ export const useAuthStore = () => {
         name,
         email,
         password,
-        password2
+
       });
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("token-init-day", new Date().getTime());
 
       dispatch(onLogin({ name: data.name, uid: data.uid }));
-     
+
     } catch (error) {
-      dispatch(onLogout("incorrect credentials"));
+      console.log(error);
+      dispatch(onLogout(error.response.data?.msg || 'register falided'));
 
       setTimeout(() => {
         dispatch(cleanErrorMessage());
       }, 10);
     }
   }
+  const checkAuthToken = async () => {
+    const token = localStorage.getItem('token')
+    if (!token) return dispatch(onLogout())
 
+    try {
+      const { data } = calendarApi.get('/auth/renew')
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("token-init-day", new Date().getTime());
+      dispatch(onLogin({ name: data.name, uid: data.uid }));
+      
+    } catch (error) {
+      localStorage.clear()
+      dispatch(onLogout())
+    }
+
+  }
+
+const startLogout = ()=> {
+  localStorage.clear()
+  dispatch(onLogout())
+
+}
 
   return {
     //properties
@@ -68,6 +90,8 @@ export const useAuthStore = () => {
 
     //methods
     startLogin,
-    startRegister
+    startRegister,
+    checkAuthToken,
+    startLogout
   };
 };

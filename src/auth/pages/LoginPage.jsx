@@ -46,7 +46,7 @@ export const LoginPage = () => {
       name: registerName,
       email: registerEmail,
       password: registerPassword,
-      password2: registerPassword2,
+      
     })
 
   };
