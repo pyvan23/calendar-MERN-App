@@ -1,38 +1,73 @@
 import { useDispatch, useSelector } from "react-redux";
 import calendarApi from "../api/calendarApi";
-import { onChecking } from "../store/auth/authSlice";
-
+import {
+  cleanErrorMessage,
+  onChecking,
+  onLogin,
+  onLogout,
+} from "../store/auth/authSlice";
 
 export const useAuthStore = () => {
+  const { status, user, errorMessage } = useSelector((state) => state.auth);
 
-    const { status, user, errorMessage, } = useSelector(state => state.auth)
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch();
+  const startLogin = async ({ email, password }) => {
+    dispatch(onChecking());
 
-    const startLogin = async ({ email, password }) => {
+    try {
+      const { data } = await calendarApi.post("/auth/login", {
+        email,
+        password,
+      });
 
-        dispatch(onChecking())
-        
-        try {
-            const resp = await calendarApi.post('/auth/login', { email , password })
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("token-init-day", new Date().getTime());
 
-            console.log({resp});
-        } catch (error) {
-            console.log({error});
-            
-            
-        }
+      dispatch(onLogin({ name: data.name, uid: data.uid }));
+    } catch (error) {
+      dispatch(onLogout("incorrect credentials"));
+
+      setTimeout(() => {
+        dispatch(cleanErrorMessage());
+      }, 10);
     }
+  }
+  const startRegister = async ({name, email, password, password2 }) => {
 
+    dispatch(onChecking());
 
-    return {
-        //properties
-        status,
-        user,
-        errorMessage,
+    try {
+      const { data } = await calendarApi.post("/auth/new", {
+        name,
+        email,
+        password,
+        password2
+      });
 
-        //methods
-        startLogin
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("token-init-day", new Date().getTime());
 
+      dispatch(onLogin({ name: data.name, uid: data.uid }));
+     
+    } catch (error) {
+      dispatch(onLogout("incorrect credentials"));
+
+      setTimeout(() => {
+        dispatch(cleanErrorMessage());
+      }, 10);
     }
-}
+  }
+
+
+  return {
+    //properties
+    status,
+    user,
+    errorMessage,
+
+    //methods
+    startLogin,
+    startRegister
+  };
+};
