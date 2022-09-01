@@ -25,6 +25,7 @@ const customStyles = {
 Modal.setAppElement("#root");
 
 export const CalendarModal = () => {
+  
   const { activeEvent, startSavingEvent } = useCalendarStore();
 
   const { isDateModalOpen, closeDateModal } = useUiStore();
